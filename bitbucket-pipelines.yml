@@ -1,0 +1,96 @@
+image: nikolaik/python-nodejs
+
+definitions:
+  codeValidation: &codeValidation
+    name: Code validation
+    image: node:latest
+    caches:
+      - node
+    script:
+      - npm install
+      - npm run lint
+      - npm run test
+    artifacts:
+      - 'node_modules/**'
+  mergeFromMaster: &mergeFromMaster
+    name: Merging master in current branch
+    script:
+      - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+      - git config user.email "webdev.administration@ac-systems.com"
+      - git config user.name "WebDev Bot"
+      - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+      - git remote update
+      - git fetch --all
+      - git merge --no-ff --no-edit -m "Merge origin/master [skip ci]" origin/master
+      - git push --all
+  deployTesting: &deployTesting
+    name: Deploying testing
+    deployment: testing
+    script:
+      - npm run build
+      - pip install awscli
+      - aws s3 sync --delete ./build/ s3://$S3_BUCKET_NAME/$REACT_APP_ENV/
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /\*
+  deployAcceptance: &deployAcceptance
+    name: Deploying acceptance
+    deployment: acceptance
+    script:
+      - npm run build
+      - pip install awscli
+      - aws s3 sync --delete ./build/ s3://$S3_BUCKET_NAME/$REACT_APP_ENV/
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /\*
+  deployProduction: &deployProduction
+    name: Deploy production
+    deployment: production
+    trigger: manual
+    script:
+      - npm run build
+      - pip install awscli
+      - aws s3 sync --delete ./build/ s3://$S3_BUCKET_NAME/$REACT_APP_ENV/
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /\*
+  deployProductionHotfix: &deployProductionHotfix
+    name: Deploy production
+    deployment: production
+    script:
+      - npm run build
+      - pip install awscli
+      - aws s3 sync --delete ./build/ s3://$S3_BUCKET_NAME/$REACT_APP_ENV/
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths /\*
+  mergeToMainBranches: &mergeToMainBranches
+    name: Merge back to develop/master
+    clone:
+      depth: full
+    script:
+      - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+      - git config user.email "webdev.administration@ac-systems.com"
+      - git config user.name "WebDev Bot"
+      - git remote set-url origin ${BITBUCKET_GIT_SSH_ORIGIN}
+      - git remote update
+      - git fetch --all
+      - git checkout master && git pull
+      - git merge --no-ff --no-edit $BITBUCKET_BRANCH
+      - git push -f origin HEAD
+      - git tag -f $(grep -ohE '\d+.\d+.\d+' <<< $BITBUCKET_BRANCH)
+      - git push -f --tags
+      - git checkout develop && git pull
+      - git merge --no-ff --no-edit $BITBUCKET_BRANCH
+      - git push -f origin HEAD
+      - git push origin --delete $BITBUCKET_BRANCH
+
+pipelines:
+  default:
+    - step: *codeValidation
+  branches:
+    develop:
+      - step: *codeValidation
+      - step: *deployTesting
+    release/*:
+      - step: *codeValidation
+      - step: *mergeFromMaster
+      - step: *deployAcceptance
+      - step: *deployProduction
+      - step: *mergeToMainBranches
+    hotfix/*:
+      - step: *codeValidation
+      - step: *deployProductionHotfix
+      - step: *mergeToMainBranches

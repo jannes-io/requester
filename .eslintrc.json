@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "airbnb-typescript"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+    }
+  },
+  "rules": {
+    "spaced-comment": 0,
+    "react/prop-types": 0
+  }
+}
