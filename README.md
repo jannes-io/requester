@@ -1,44 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Requester
 
-## Available Scripts
+Easily test and develop APIs.
 
-In the project directory, you can run:
+![License](https://img.shields.io/badge/license-MIT-green)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue)](https://www.typescriptlang.org/) 
+[![Code Style](https://badgen.net/badge/code%20style/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 
-### `yarn start`
+## Usage
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Development
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+#### Development server
 
-### `yarn test`
+* On windows: Run pageant and add the ssh key
+* On mac: 
+```bash
+eval `ssh-agent`
+ssh-add
+```
+Then you can proceed to download the packages
+```bash
+npm run
+npm run start
+```
+This will start the development server on `localhost:3000`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Scripts
 
-### `yarn build`
+Run a script using `npm run <script-name>`. To add/edit/remove scripts, see `scripts` section in `package.json`.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Script | Usage |
+| --- | --- |
+|`start`|Starts the development server on `localhost:3000`|
+|`build`|Compiles and bundles the React app for production usage|
+|`test`|Runs tests if any are available|
+|`lint`|Runs tslint and checks all files for any violations.|
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+#### TSLint
+This project uses tslint to ensure a consistent code style.
+To enable tslint please see your editor's manual.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+⚠ Pull requests with tslint violations **WILL BE DENIED** ⚠
 
-### `yarn eject`
+For PHPStorm/WebStorm this is under
+Languages & Frameworks > TypeScript > TSLint > Automatic configuration
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Depending on your editor/IDE you might have to change some automatic code completion settings.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Themes
+You can edit the theme in `src/App/App.tsx`. See [material-ui documentation](https://material-ui.com/customization/themes/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Routes
+To render containers based on the URL check `src/App/Routes.tsx`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Production
+React must be compiled to a static asset bundle. Do this by running
+```bash
+npm run build
+```
+This will copy all files to the `build` directory, where they can then be uploaded to a webserver or static file host.
