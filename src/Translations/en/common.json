@@ -2,8 +2,15 @@
   "app-name": "Requester",
   "request-editor": {
     "panel": {
+      "info": {
+        "summary": "Request information",
+        "fields": {
+          "name": "Name",
+          "description": "Description"
+        }
+      },
       "url": {
-        "summary": "Url Information",
+        "summary": "Url",
         "fields": {
           "method": "Method",
           "url": "Request url"

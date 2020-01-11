@@ -8,6 +8,37 @@ import { useTranslation } from 'react-i18next';
 import { IEditorProps } from './index';
 import { IHeader } from '../../Types/Request';
 
+interface IHeaderFieldsProps {
+  header: IHeader;
+  onChange: (fieldName: keyof IHeader, newValue: any) => void;
+}
+
+const HeaderFields: React.FC<IHeaderFieldsProps> = ({ header, onChange, children }) => (<TableRow>
+  <TableCell padding="checkbox">
+    <Checkbox
+      checked={header.enabled}
+      onChange={(e) => onChange('enabled', e.target.checked)}
+    />
+  </TableCell>
+  <TableCell>
+    <TextField
+      fullWidth
+      value={header.key}
+      onChange={(e) => onChange('key', e.target.value)}
+    />
+  </TableCell>
+  <TableCell>
+    <TextField
+      fullWidth
+      value={header.value}
+      onChange={(e) => onChange('value', e.target.value)}
+    />
+  </TableCell>
+  <TableCell padding="checkbox">
+    {children}
+  </TableCell>
+</TableRow>);
+
 interface IHeaderRowProps {
   header: IHeader;
   onChange: (headerKey: string, header: IHeader) => void;
@@ -19,36 +50,16 @@ const HeaderRow: React.FC<IHeaderRowProps> = ({ header, onChange, onDelete }) =>
     onChange(header.key, { ...header, [fieldName]: newValue });
   };
 
-  return <TableRow>
-    <TableCell padding="checkbox">
-      <Checkbox
-        checked={header.enabled}
-        onChange={(e) => handleChange('enabled', e.target.checked)}
-      />
-    </TableCell>
-    <TableCell>
-      <TextField
-        fullWidth
-        value={header.key}
-        onChange={(e) => handleChange('key', e.target.value)}
-      />
-    </TableCell>
-    <TableCell>
-      <TextField
-        fullWidth
-        value={header.value}
-        onChange={(e) => handleChange('value', e.target.value)}
-      />
-    </TableCell>
-    <TableCell padding="checkbox">
-      <IconButton onClick={() => onDelete(header.key)}>
-        <DeleteIcon />
-      </IconButton>
-    </TableCell>
-  </TableRow>;
+  return <HeaderFields header={header} onChange={handleChange}>
+    <IconButton onClick={() => onDelete(header.key)}>
+      <DeleteIcon />
+    </IconButton>
+  </HeaderFields>;
 };
 
-const NewHeaderRow: React.FC<{ onSave: (newHeader: IHeader) => void }> = ({ onSave }) => {
+const NewHeaderRow: React.FC<{
+  onSave: (newHeader: IHeader) => void
+}> = ({ onSave }) => {
   const headerTemplate: IHeader = {
     id: -1,
     key: '',
@@ -60,30 +71,14 @@ const NewHeaderRow: React.FC<{ onSave: (newHeader: IHeader) => void }> = ({ onSa
     setHeader({ ...header, [fieldName]: newValue });
   };
 
-  return <TableRow>
-    <TableCell colSpan={2}>
-      <TextField
-        fullWidth
-        value={header.key}
-        onChange={(e) => handleChange('key', e.target.value)}
-      />
-    </TableCell>
-    <TableCell>
-      <TextField
-        fullWidth
-        value={header.value}
-        onChange={(e) => handleChange('value', e.target.value)}
-      />
-    </TableCell>
-    <TableCell padding="checkbox">
-      <IconButton onClick={() => {
-        onSave(header);
-        setHeader(headerTemplate);
-      }}>
-        <SaveIcon />
-      </IconButton>
-    </TableCell>
-  </TableRow>;
+  return <HeaderFields header={header} onChange={handleChange}>
+    <IconButton onClick={() => {
+      onSave(header);
+      setHeader(headerTemplate);
+    }}>
+      <SaveIcon />
+    </IconButton>
+  </HeaderFields>;
 };
 
 interface IHeadersEditorProps extends IEditorProps {

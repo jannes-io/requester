@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
   ExpansionPanel,
   ExpansionPanelDetails,
-  ExpansionPanelSummary, Fab,
+  ExpansionPanelSummary,
+  Fab,
   Grid,
   Typography,
 } from '@material-ui/core';
@@ -17,6 +18,7 @@ import BodyEditor from './BodyEditor';
 import UrlEditor from './UrlEditor';
 import HeadersEditor from './HeadersEditor';
 import { IRequest } from '../../Types/Request';
+import InfoEditor from './InfoEditor';
 
 export interface IEditorProps {
   request: IRequest;
@@ -25,7 +27,7 @@ export interface IEditorProps {
 
 const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
   const [requestFields, setRequestFields] = useState<IRequest>(request || {
-    name: 'unnamed',
+    name: '',
     description: '',
     method: 'GET',
     url: '',
@@ -44,8 +46,20 @@ const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
   const classes = useStyles();
   const { t } = useTranslation('common');
 
+  const infoSummary = requestFields.name === ''
+    ? t('request-editor.panel.info.summary')
+    : `${t('request-editor.panel.info.summary')} (${requestFields.name})`;
+
   return <Grid container spacing={3} className={classes.requestContainer}>
     <Grid item xs={12}>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography>{infoSummary}</Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <InfoEditor request={requestFields} onChange={handleRequestUpdate} />
+        </ExpansionPanelDetails>
+      </ExpansionPanel>
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
           <Typography>{t('request-editor.panel.url.summary')}</Typography>
