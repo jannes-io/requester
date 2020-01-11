@@ -21,7 +21,7 @@ import useStyles from './styles';
 const Layout: React.FC = ({
   children,
 }) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation('common');
   const classes = useStyles(open)();
 

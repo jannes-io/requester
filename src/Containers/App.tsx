@@ -4,6 +4,7 @@ import { I18nextProvider, I18nextProviderProps } from 'react-i18next';
 import { MuiThemeProvider } from '@material-ui/core';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import Layout from './Layout';
+import RequestEditor from '../Components/RequestEditor';
 
 /*
 color palette:
@@ -33,7 +34,7 @@ const App: React.FC<I18nextProviderProps> = ({ i18n }) => (
     >
       <I18nextProvider i18n={i18n}>
         <Layout>
-          <div>Hello</div>
+          <RequestEditor />
         </Layout>
       </I18nextProvider>
     </SnackbarProvider>

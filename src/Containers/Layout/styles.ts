@@ -30,7 +30,6 @@ export default (isOpen: boolean) => makeStyles((theme: Theme) => createStyles({
     width: isOpen ? `calc(100% - ${theme.spacing(30)}px)` : '100%',
   },
   menuButton: {
-    paddingLeft: theme.spacing(2),
     marginRight: theme.spacing(3),
     display: isOpen ? 'none' : 'initial',
   },
@@ -42,7 +41,7 @@ export default (isOpen: boolean) => makeStyles((theme: Theme) => createStyles({
   drawerPaper: {
     position: 'relative',
     whiteSpace: 'nowrap',
-    width: isOpen ? theme.spacing(30) : theme.spacing(8),
+    width: isOpen ? theme.spacing(30) : 0,
     transition: isOpen
       ? theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,

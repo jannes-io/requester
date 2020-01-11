@@ -1,3 +1,25 @@
 {
-  "app-name": "Http Toolkit"
+  "app-name": "Requester",
+  "request-editor": {
+    "panel": {
+      "url": {
+        "summary": "Url Information",
+        "fields": {
+          "method": "Method",
+          "url": "Request url"
+        }
+      },
+      "headers": {
+        "summary": "Headers",
+        "fields": {
+          "key": "Key",
+          "value": "Value"
+        }
+      },
+      "body": {
+        "summary": "Body"
+      }
+    },
+    "send": "Send"
+  }
 }
