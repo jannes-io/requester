@@ -41,17 +41,17 @@ const HeaderFields: React.FC<IHeaderFieldsProps> = ({ header, onChange, children
 
 interface IHeaderRowProps {
   header: IHeader;
-  onChange: (headerKey: string, header: IHeader) => void;
-  onDelete: (headerKey: string) => void;
+  onChange: (headerId: number, header: IHeader) => void;
+  onDelete: (headerId: number) => void;
 }
 
 const HeaderRow: React.FC<IHeaderRowProps> = ({ header, onChange, onDelete }) => {
   const handleChange = (fieldName: keyof IHeader, newValue: any) => {
-    onChange(header.key, { ...header, [fieldName]: newValue });
+    onChange(header.id, { ...header, [fieldName]: newValue });
   };
 
   return <HeaderFields header={header} onChange={handleChange}>
-    <IconButton onClick={() => onDelete(header.key)}>
+    <IconButton onClick={() => onDelete(header.id)}>
       <DeleteIcon />
     </IconButton>
   </HeaderFields>;
@@ -88,18 +88,19 @@ const HeadersEditor: React.FC<IHeadersEditorProps> = ({ request, onChange }) => 
   const { t } = useTranslation('common');
 
   const handleHeaderCreate = (newHeader: IHeader) => {
-    request.headers.push(newHeader);
+    const highestId = request.headers.reduce((max, { id }) => (max < id ? id : max), 0);
+    request.headers.push({ ...newHeader, id: highestId + 1 });
     onChange({ ...request });
   };
 
-  const handleHeaderUpdate = (headerKey: string, updatedHeader: IHeader) => {
-    const index = request.headers.findIndex(({ key }) => key === headerKey);
+  const handleHeaderUpdate = (headerId: number, updatedHeader: IHeader) => {
+    const index = request.headers.findIndex(({ id }) => id === headerId);
     request.headers[index] = updatedHeader;
     onChange({ ...request });
   };
 
-  const handleHeaderDelete = (headerKey: string) => {
-    request.headers = request.headers.filter(({ key }) => key !== headerKey);
+  const handleHeaderDelete = (headerId: number) => {
+    request.headers = request.headers.filter(({ id }) => id !== headerId);
     onChange({ ...request });
   };
 
