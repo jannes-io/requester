@@ -11,19 +11,11 @@ Easily test and develop APIs.
 ### Development
 
 #### Development server
-
-* On windows: Run pageant and add the ssh key
-* On mac: 
 ```bash
-eval `ssh-agent`
-ssh-add
+npm install
+npm run electron-dev
 ```
-Then you can proceed to download the packages
-```bash
-npm run
-npm run start
-```
-This will start the development server on `localhost:3000`
+This will start the local development server on `localhost:3000` and open an electron window.
 
 #### Scripts
 
@@ -35,27 +27,19 @@ Run a script using `npm run <script-name>`. To add/edit/remove scripts, see `scr
 |`build`|Compiles and bundles the React app for production usage|
 |`test`|Runs tests if any are available|
 |`lint`|Runs tslint and checks all files for any violations.|
+|`electron-dev`|Runs the development server and opens an electron window.|
 
-#### TSLint
-This project uses tslint to ensure a consistent code style.
-To enable tslint please see your editor's manual.
+#### ESLint
+This project uses eslint to ensure a consistent code style.
+To enable eslint please see your editor's manual.
 
-⚠ Pull requests with tslint violations **WILL BE DENIED** ⚠
-
-For PHPStorm/WebStorm this is under
-Languages & Frameworks > TypeScript > TSLint > Automatic configuration
+⚠ Pull requests with violations **WILL BE DENIED** ⚠
 
 Depending on your editor/IDE you might have to change some automatic code completion settings.
-
-#### Themes
-You can edit the theme in `src/App/App.tsx`. See [material-ui documentation](https://material-ui.com/customization/themes/)
-
-#### Routes
-To render containers based on the URL check `src/App/Routes.tsx`
 
 ### Production
 React must be compiled to a static asset bundle. Do this by running
 ```bash
 npm run build
 ```
-This will copy all files to the `build` directory, where they can then be uploaded to a webserver or static file host.
+This will copy all files to the `build` directory. Then electron can be built, using build/index.html as entry file.
