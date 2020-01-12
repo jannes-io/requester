@@ -28,5 +28,11 @@
       }
     },
     "send": "Send"
+  },
+  "response-viewer": {
+    "tabs": {
+      "body": "Body",
+      "headers": "Headers"
+    }
   }
 }
