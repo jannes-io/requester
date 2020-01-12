@@ -26,9 +26,7 @@ const UrlEditor: React.FC<IUrlEditorProps> = ({ request, onChange }) => {
           <MenuItem value="PUT">PUT</MenuItem>
           <MenuItem value="PATCH">PATCH</MenuItem>
           <MenuItem value="DELETE">DELETE</MenuItem>
-          <MenuItem value="CONNECT">CONNECT</MenuItem>
           <MenuItem value="OPTIONS">OPTIONS</MenuItem>
-          <MenuItem value="TRACE">TRACE</MenuItem>
         </Select>
       </FormControl>
     </Grid>

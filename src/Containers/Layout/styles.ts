@@ -71,9 +71,6 @@ export default (isOpen: boolean) => makeStyles((theme: Theme) => createStyles({
     overflow: 'auto',
     flexDirection: 'column',
   },
-  fixedHeight: {
-    height: theme.spacing(30),
-  },
   logoIcon: {
     height: 42,
     marginLeft: theme.spacing(1),

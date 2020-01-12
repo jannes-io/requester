@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  CircularProgress,
   ExpansionPanel,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
@@ -10,7 +11,6 @@ import {
 import {
   ExpandMore as ExpandMoreIcon,
   Send as SendIcon,
-  Save as SaveIcon,
 } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 import useStyles from './styles';
@@ -19,6 +19,9 @@ import UrlEditor from './UrlEditor';
 import HeadersEditor from './HeadersEditor';
 import { IRequest } from '../../Types/Request';
 import InfoEditor from './InfoEditor';
+import RequestHandler from '../../Services/RequestHandler';
+import { IResponse } from '../../Types/Response';
+import ResponseViewer from '../ResponseViewer';
 
 export interface IEditorProps {
   request: IRequest;
@@ -31,20 +34,25 @@ const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
     description: '',
     method: 'GET',
     url: '',
-    headers: [{
-      id: 0,
-      key: 'User-Agent',
-      value: 'Requester',
-      enabled: true,
-    }],
+    headers: [],
   });
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<IResponse | null>(null);
+
+  const classes = useStyles();
+  const { t } = useTranslation('common');
 
   const handleRequestUpdate = (updatedRequest: IRequest) => {
     setRequestFields(updatedRequest);
   };
 
-  const classes = useStyles();
-  const { t } = useTranslation('common');
+  const handleSendRequest = () => {
+    setResponse(null);
+    setLoading(true);
+    RequestHandler.sendRequest(requestFields)
+      .then(setResponse)
+      .then(() => setLoading(false));
+  };
 
   const infoSummary = requestFields.name === ''
     ? t('request-editor.panel.info.summary')
@@ -86,14 +94,26 @@ const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
       </ExpansionPanel>
     </Grid>
     <Grid item xs={12} className={classes.actionContainer}>
-      <Fab variant="extended" color="primary" className={classes.fab}>
-        <SendIcon className={classes.sendIcon} />
-        Send
-      </Fab>
-      <Fab color="secondary" className={classes.fab}>
-        <SaveIcon />
+      <Fab
+        variant="extended"
+        color="primary"
+        className={classes.fab}
+        onClick={handleSendRequest}
+        disabled={loading}
+      >
+        {loading
+          ? <CircularProgress color="secondary" size={24} />
+          : <>
+            <SendIcon className={classes.sendIcon} />
+            Send
+          </>}
       </Fab>
     </Grid>
+    {response !== null
+      ? <Grid item xs={12}>
+        <ResponseViewer response={response} />
+      </Grid>
+      : null}
   </Grid>;
 };
 

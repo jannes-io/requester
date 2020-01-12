@@ -1,7 +1,10 @@
 export interface IHeader {
-  id: number;
   key: string;
   value: string;
+}
+
+export interface IRequestHeader extends IHeader{
+  id: number;
   enabled: boolean;
 }
 
@@ -13,15 +16,13 @@ export type Method =
   'PUT' |
   'PATCH' |
   'DELETE' |
-  'CONNECT' |
-  'OPTIONS' |
-  'TRACE';
+  'OPTIONS';
 
 export interface IRequest {
   name: string;
   description: string;
   method: Method;
   url: string;
-  headers: IHeader[];
+  headers: IRequestHeader[];
   body?: string;
 }

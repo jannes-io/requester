@@ -6,11 +6,11 @@ import {
 } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 import { IEditorProps } from './index';
-import { IHeader } from '../../Types/Request';
+import { IRequestHeader } from '../../Types/Request';
 
 interface IHeaderFieldsProps {
-  header: IHeader;
-  onChange: (fieldName: keyof IHeader, newValue: any) => void;
+  header: IRequestHeader;
+  onChange: (fieldName: keyof IRequestHeader, newValue: any) => void;
 }
 
 const HeaderFields: React.FC<IHeaderFieldsProps> = ({ header, onChange, children }) => (<TableRow>
@@ -40,13 +40,13 @@ const HeaderFields: React.FC<IHeaderFieldsProps> = ({ header, onChange, children
 </TableRow>);
 
 interface IHeaderRowProps {
-  header: IHeader;
-  onChange: (headerId: number, header: IHeader) => void;
+  header: IRequestHeader;
+  onChange: (headerId: number, header: IRequestHeader) => void;
   onDelete: (headerId: number) => void;
 }
 
 const HeaderRow: React.FC<IHeaderRowProps> = ({ header, onChange, onDelete }) => {
-  const handleChange = (fieldName: keyof IHeader, newValue: any) => {
+  const handleChange = (fieldName: keyof IRequestHeader, newValue: any) => {
     onChange(header.id, { ...header, [fieldName]: newValue });
   };
 
@@ -58,16 +58,16 @@ const HeaderRow: React.FC<IHeaderRowProps> = ({ header, onChange, onDelete }) =>
 };
 
 const NewHeaderRow: React.FC<{
-  onSave: (newHeader: IHeader) => void
+  onSave: (newHeader: IRequestHeader) => void
 }> = ({ onSave }) => {
-  const headerTemplate: IHeader = {
+  const headerTemplate: IRequestHeader = {
     id: -1,
     key: '',
     value: '',
     enabled: true,
   };
-  const [header, setHeader] = React.useState<IHeader>(headerTemplate);
-  const handleChange = (fieldName: keyof IHeader, newValue: any) => {
+  const [header, setHeader] = React.useState<IRequestHeader>(headerTemplate);
+  const handleChange = (fieldName: keyof IRequestHeader, newValue: any) => {
     setHeader({ ...header, [fieldName]: newValue });
   };
 
@@ -87,13 +87,13 @@ interface IHeadersEditorProps extends IEditorProps {
 const HeadersEditor: React.FC<IHeadersEditorProps> = ({ request, onChange }) => {
   const { t } = useTranslation('common');
 
-  const handleHeaderCreate = (newHeader: IHeader) => {
+  const handleHeaderCreate = (newHeader: IRequestHeader) => {
     const highestId = request.headers.reduce((max, { id }) => (max < id ? id : max), 0);
     request.headers.push({ ...newHeader, id: highestId + 1 });
     onChange({ ...request });
   };
 
-  const handleHeaderUpdate = (headerId: number, updatedHeader: IHeader) => {
+  const handleHeaderUpdate = (headerId: number, updatedHeader: IRequestHeader) => {
     const index = request.headers.findIndex(({ id }) => id === headerId);
     request.headers[index] = updatedHeader;
     onChange({ ...request });
