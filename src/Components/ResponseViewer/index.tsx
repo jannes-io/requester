@@ -1,5 +1,18 @@
 import React, { useState } from 'react';
-import { AppBar, Box, Paper, Tab, Tabs, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Box,
+  Paper,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+  Tabs,
+  Typography,
+} from '@material-ui/core';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atelierHeathDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useTranslation } from 'react-i18next';
 import { IResponse } from '../../Types/Response';
 import useStyles from './styles';
@@ -34,12 +47,19 @@ const ResponseViewer: React.FC<{ response: IResponse }> = ({ response }) => {
       <Typography>{response.statusText}</Typography>
     </AppBar>
     <TabPanel value={tabIndex} index={0}>
-      <Typography>
-        {response.body}
-      </Typography>
+      <SyntaxHighlighter style={atelierHeathDark} showLineNumbers>
+        {JSON.stringify(JSON.parse(response.body || '{}'), null, 2)}
+      </SyntaxHighlighter>
     </TabPanel>
     <TabPanel value={tabIndex} index={1}>
-      Test2
+      <Table size="small">
+        <TableBody>
+          {response.headers.map(({ key, value }) => <TableRow key={key}>
+            <TableCell><Typography>{key}</Typography></TableCell>
+            <TableCell><Typography>{value}</Typography></TableCell>
+          </TableRow>)}
+        </TableBody>
+      </Table>
     </TabPanel>
   </Paper>;
 };

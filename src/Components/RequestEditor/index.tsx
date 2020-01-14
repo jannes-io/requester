@@ -33,7 +33,7 @@ const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
     name: '',
     description: '',
     method: 'GET',
-    url: '',
+    url: 'http://localhost/echo-api/',
     headers: [],
   });
   const [loading, setLoading] = useState(false);
