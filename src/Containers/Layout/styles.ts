@@ -54,16 +54,17 @@ export default (isOpen: boolean) => makeStyles((theme: Theme) => createStyles({
     overflowX: isOpen ? 'initial' : 'hidden',
   },
   appBarSpacer: {
-    marginBottom: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: theme.spacing(7),
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginBottom: theme.spacing(8),
+    },
   },
   content: {
     flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(4),
   },
   paper: {
     padding: theme.spacing(2),

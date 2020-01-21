@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CircularProgress,
   ExpansionPanel,
@@ -28,22 +28,19 @@ export interface IEditorProps {
   onChange: (newRequest: IRequest) => void;
 }
 
-const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
-  const [requestFields, setRequestFields] = useState<IRequest>(request || {
-    name: '',
-    description: '',
-    method: 'GET',
-    url: 'http://localhost/echo-api/',
-    headers: [],
-  });
+const RequestEditor: React.FC<IEditorProps> = ({ request, onChange }) => {
+  const [requestFields, setRequestFields] = useState<IRequest>(request);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<IResponse | null>(null);
 
   const classes = useStyles();
   const { t } = useTranslation('common');
 
+  useEffect(() => setRequestFields(request), [request]);
+
   const handleRequestUpdate = (updatedRequest: IRequest) => {
     setRequestFields(updatedRequest);
+    onChange(updatedRequest);
   };
 
   const handleSendRequest = () => {
@@ -54,15 +51,11 @@ const RequestEditor: React.FC<{ request?: IRequest }> = ({ request }) => {
       .then(() => setLoading(false));
   };
 
-  const infoSummary = requestFields.name === ''
-    ? t('request-editor.panel.info.summary')
-    : `${t('request-editor.panel.info.summary')} (${requestFields.name})`;
-
   return <Grid container spacing={3} className={classes.requestContainer}>
     <Grid item xs={12}>
       <ExpansionPanel>
         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography>{infoSummary}</Typography>
+          <Typography>{t('request-editor.panel.info.summary')}</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
           <InfoEditor request={requestFields} onChange={handleRequestUpdate} />

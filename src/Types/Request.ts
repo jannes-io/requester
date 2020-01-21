@@ -26,3 +26,13 @@ export interface IRequest {
   headers: IRequestHeader[];
   body?: string;
 }
+
+const createNewRequest = (): IRequest => ({
+  name: '',
+  description: '',
+  method: 'GET',
+  url: 'http://localhost/echo-api/',
+  headers: [],
+});
+
+export default createNewRequest;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   AppBar,
-  Box,
   Paper,
   Tab,
   Table,
@@ -16,21 +15,7 @@ import { atelierHeathDark } from 'react-syntax-highlighter/dist/esm/styles/hljs'
 import { useTranslation } from 'react-i18next';
 import { IResponse } from '../../Types/Response';
 import useStyles from './styles';
-
-interface ITabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
-
-const TabPanel: React.FC<ITabPanelProps> = ({ children, value, index, ...other }) => <Typography
-  component="div"
-  role="tabpanel"
-  hidden={value !== index}
-  {...other}
->
-  {value === index && <Box p={3}>{children}</Box>}
-</Typography>;
+import TabPanel from '../TabPanel';
 
 const ResponseViewer: React.FC<{ response: IResponse }> = ({ response }) => {
   const [tabIndex, setTabIndex] = useState(0);

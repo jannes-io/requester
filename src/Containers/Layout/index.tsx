@@ -6,8 +6,6 @@ import {
   AppBar,
   IconButton,
   Drawer,
-  Container,
-  Grid,
   Typography,
   Zoom,
 } from '@material-ui/core';
@@ -68,11 +66,7 @@ const Layout: React.FC = ({
     </Drawer>
     <main className={classes.content}>
       <div className={classes.appBarSpacer} />
-      <Container maxWidth="xl" className={classes.container}>
-        <Grid component="div" container spacing={3}>
-          {children}
-        </Grid>
-      </Container>
+      {children}
     </main>
   </div>;
 };
