@@ -12,7 +12,7 @@ const mkdirIfNotExist = async (path: string) => {
   }
 
   try {
-    await promisify(fs.mkdir(path, { recursive: true }));
+    await promisify(fs.mkdir)(path, { recursive: true });
   } catch (err) {
     if (err) {
       Logger.error(err);
@@ -24,7 +24,8 @@ const mkdirIfNotExist = async (path: string) => {
 const storeRequest = async (request: IRequest, path: string = defaultPath) => {
   await mkdirIfNotExist(path);
   try {
-    await promisify(fs.writeFile)(`${path}/${request.name || 'unnamed'}.req.json`, JSON.stringify(request));
+    const fileName = `${request.name || 'unnamed'}.req.json`;
+    await promisify(fs.writeFile)(`${path}/${fileName}`, JSON.stringify(request));
   } catch (err) {
     Logger.error(err);
     throw Error('Unable to save file');
