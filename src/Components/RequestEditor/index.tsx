@@ -11,8 +11,10 @@ import {
 import {
   ExpandMore as ExpandMoreIcon,
   Send as SendIcon,
+  Save as SaveIcon,
 } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
+import { useSnackbar } from 'notistack';
 import useStyles from './styles';
 import BodyEditor from './BodyEditor';
 import UrlEditor from './UrlEditor';
@@ -22,6 +24,7 @@ import InfoEditor from './InfoEditor';
 import RequestHandler from '../../Services/RequestHandler';
 import { IResponse } from '../../Types/Response';
 import ResponseViewer from '../ResponseViewer';
+import storeRequest from '../../Services/RequestStore';
 
 export interface IEditorProps {
   request: IRequest;
@@ -35,6 +38,7 @@ const RequestEditor: React.FC<IEditorProps> = ({ request, onChange }) => {
 
   const classes = useStyles();
   const { t } = useTranslation('common');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => setRequestFields(request), [request]);
 
@@ -48,7 +52,18 @@ const RequestEditor: React.FC<IEditorProps> = ({ request, onChange }) => {
     setLoading(true);
     RequestHandler.sendRequest(requestFields)
       .then(setResponse)
-      .then(() => setLoading(false));
+      .catch(() => enqueueSnackbar('Failed to parse response.', { variant: 'error' }))
+      .finally(() => setLoading(false));
+  };
+
+  const handleSaveRequest = () => {
+    storeRequest(requestFields)
+      .then(() => {
+        enqueueSnackbar('Request saved', { variant: 'success' });
+      })
+      .catch(() => {
+        enqueueSnackbar('Failed to save request', { variant: 'error' });
+      });
   };
 
   return <Grid container spacing={3} className={classes.requestContainer}>
@@ -87,6 +102,12 @@ const RequestEditor: React.FC<IEditorProps> = ({ request, onChange }) => {
       </ExpansionPanel>
     </Grid>
     <Grid item xs={12} className={classes.actionContainer}>
+      <Fab
+        className={classes.fab}
+        onClick={handleSaveRequest}
+      >
+        <SaveIcon />
+      </Fab>
       <Fab
         variant="extended"
         color="primary"
