@@ -15,11 +15,12 @@ import {
   Http as HttpIcon,
 } from '@material-ui/icons';
 import useStyles from './styles';
+import ProjectTree from '../../Components/ProjectTree';
 
 const Layout: React.FC = ({
   children,
 }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const { t } = useTranslation('common');
   const classes = useStyles(open)();
 
@@ -62,6 +63,9 @@ const Layout: React.FC = ({
         >
           <ChevronLeftIcon className={classes.chevron} />
         </IconButton>
+      </div>
+      <div className={classes.drawerContent}>
+        <ProjectTree />
       </div>
     </Drawer>
     <main className={classes.content}>

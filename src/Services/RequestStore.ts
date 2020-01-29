@@ -1,7 +1,7 @@
 import Logger from './Logger';
 import { IRequest } from '../Types/Request';
 
-const fs = window.require('fs').promises;
+const fs = window.require !== undefined ? window.require('fs').promises : {};
 
 const defaultPath = './reqs';
 

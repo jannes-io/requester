@@ -53,6 +53,11 @@ export default (isOpen: boolean) => makeStyles((theme: Theme) => createStyles({
       }),
     overflowX: isOpen ? 'initial' : 'hidden',
   },
+  drawerContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '0 8px',
+  },
   appBarSpacer: {
     [theme.breakpoints.down('sm')]: {
       marginBottom: theme.spacing(7),

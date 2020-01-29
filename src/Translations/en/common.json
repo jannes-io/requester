@@ -1,5 +1,23 @@
 {
   "app-name": "Requester",
+  "drawer": {
+    "project-explorer": {
+      "title": "Projects",
+      "new-project": "Create project",
+      "open-project": "Open project"
+    }
+  },
+  "new-project-modal": {
+    "title": "Create new project",
+    "create": "Create",
+    "cancel": "Cancel",
+    "name": "Project name"
+  },
+  "file-input": {
+    "select-file": "Select file",
+    "select-folder": "Select folder",
+    "no-selection": "Nothing selected."
+  },
   "request-editor": {
     "panel": {
       "info": {
