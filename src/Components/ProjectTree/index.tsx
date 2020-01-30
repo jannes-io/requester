@@ -15,11 +15,13 @@ import {
 } from '@material-ui/core';
 import useStyles from './styles';
 import NewProjectModal from './NewProjectModal';
+import OpenProjectModal from './OpenProjectModal';
 
 const ProjectTree: React.FC = () => {
   const { t } = useTranslation('common');
   const classes = useStyles();
   const [newProjectModalOpen, setNewProjectModalOpen] = useState(false);
+  const [openProjectModalOpen, setOpenProjectModelOpen] = useState(false);
 
   return <>
     <span className={classes.labelContainer}>
@@ -33,16 +35,12 @@ const ProjectTree: React.FC = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title={t('drawer.project-explorer.open-project')} placement="top">
-          <IconButton size="small">
+          <IconButton size="small" onClick={() => setOpenProjectModelOpen(true)}>
             <BrowseIcon />
           </IconButton>
         </Tooltip>
       </span>
     </span>
-    <NewProjectModal
-      open={newProjectModalOpen}
-      onClose={() => setNewProjectModalOpen(false)}
-    />
     <Divider className={classes.divider} />
     <TreeView defaultExpandIcon={<ExpandIcon />} defaultCollapseIcon={<CollapseIcon />}>
       <TreeItem nodeId="2" label="Test Project">
@@ -51,6 +49,14 @@ const ProjectTree: React.FC = () => {
         <TreeItem nodeId="5" label="Test Request 3" />
       </TreeItem>
     </TreeView>
+    <NewProjectModal
+      open={newProjectModalOpen}
+      onClose={() => setNewProjectModalOpen(false)}
+    />
+    <OpenProjectModal
+      open={openProjectModalOpen}
+      onClose={() => setOpenProjectModelOpen(false)}
+    />
   </>;
 };
 

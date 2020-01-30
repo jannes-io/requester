@@ -1,6 +1,6 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 
-export const newProjectModalStyles = makeStyles(() => createStyles({
+export const modalStyles = makeStyles(() => createStyles({
   content: {
     display: 'flex',
     flexDirection: 'column',

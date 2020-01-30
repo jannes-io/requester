@@ -1,21 +1,34 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, TextField } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
 import FileInput, { InputType } from '../FileInput';
-import { newProjectModalStyles as useStyles } from './styles';
+import { modalStyles as useStyles } from './styles';
 import { IProject } from '../../Types/Project';
+import { createProject } from '../../Services/RequestRepository';
 
 interface IModalProps {
   open?: boolean;
-  onClose?: () => void;
+  onClose: (project?: IProject) => void;
 }
 
 const NewProjectModal: React.FC<IModalProps> = ({ open, onClose }) => {
   const [project, setProject] = useState<IProject>({
     name: '',
+    location: '',
   });
   const classes = useStyles();
   const { t } = useTranslation('common');
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleCreate = () => {
+    createProject(project)
+      .then(() => {
+        enqueueSnackbar(t('new-project-modal.create-success'), { variant: 'success' });
+        onClose(project);
+      })
+      .catch(() => enqueueSnackbar(t('new-project-modal.create-failed'), { variant: 'error' }));
+  };
 
   return <Dialog
     open={open || false}
@@ -34,7 +47,7 @@ const NewProjectModal: React.FC<IModalProps> = ({ open, onClose }) => {
         </Grid>
         <Grid item xs={12}>
           <FileInput
-            id="project-location"
+            id="new-project-location"
             type={InputType.FOLDER}
             onChange={(location) => setProject({ ...project, location })}
           />
@@ -42,10 +55,10 @@ const NewProjectModal: React.FC<IModalProps> = ({ open, onClose }) => {
       </Grid>
     </DialogContent>
     <DialogActions>
-      <Button color="secondary" onClick={onClose}>
+      <Button color="secondary" onClick={() => onClose()}>
         {t('new-project-modal.cancel')}
       </Button>
-      <Button color="primary" variant="contained">
+      <Button color="primary" variant="contained" onClick={handleCreate}>
         {t('new-project-modal.create')}
       </Button>
     </DialogActions>

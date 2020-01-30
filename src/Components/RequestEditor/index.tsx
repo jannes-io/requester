@@ -24,7 +24,7 @@ import InfoEditor from './InfoEditor';
 import RequestHandler from '../../Services/RequestHandler';
 import { IResponse } from '../../Types/Response';
 import ResponseViewer from '../ResponseViewer';
-import storeRequest from '../../Services/RequestStore';
+import storeRequest from '../../Services/RequestRepository';
 
 export interface IEditorProps {
   request: IRequest;

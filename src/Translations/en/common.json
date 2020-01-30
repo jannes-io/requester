@@ -11,7 +11,16 @@
     "title": "Create new project",
     "create": "Create",
     "cancel": "Cancel",
-    "name": "Project name"
+    "name": "Project name",
+    "create-success": "Project created successfully.",
+    "create-failed": "Couldn't create project. Please check file permissions."
+  },
+  "open-project-modal": {
+    "title": "Open existing project",
+    "open": "Open",
+    "cancel": "Cancel",
+    "open-success": "Project {{projectName}} opened.",
+    "open-failed": "Couldn't find a project at that location. Please select a project that contains a 'requester' directory"
   },
   "file-input": {
     "select-file": "Select file",
